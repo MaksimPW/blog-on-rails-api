@@ -25,7 +25,7 @@ RSpec.describe 'Posts API', type: :request do
 
       it { expect(json).to_not be_empty }
 
-      %w(id title content author likes image).each do |attr|
+      %w(id title content likes).each do |attr|
         it "returns the post attr {attr}" do
           expect(json["#{attr}"]).to eq(post["#{attr}"])
         end
