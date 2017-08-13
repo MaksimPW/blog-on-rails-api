@@ -16,3 +16,5 @@
 .byebug_history
 .rspec
 .env
+
+/public/system/*

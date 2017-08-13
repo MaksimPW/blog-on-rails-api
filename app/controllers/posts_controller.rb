@@ -3,7 +3,7 @@ class PostsController < ApplicationController
   before_action :set_default_format
 
   def index
-    @posts = Post.all
+    @posts = Post.order(created_at: :desc)
   end
 
   def create
