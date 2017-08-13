@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe 'Posts API', type: :request do
   let!(:posts) { create_list(:post, 9) }
-  let(:post) { posts.first }
-  let(:post_id) { post.id }
+  let(:post_element) { posts.first }
+  let(:post_id) { post_element.id }
 
   describe 'GET /posts' do
     before { get '/posts' }
@@ -27,7 +27,7 @@ RSpec.describe 'Posts API', type: :request do
 
       %w(id title content likes).each do |attr|
         it "returns the post attr {attr}" do
-          expect(json["#{attr}"]).to eq(post["#{attr}"])
+          expect(json["#{attr}"]).to eq(post_element["#{attr}"])
         end
       end
 
@@ -49,8 +49,41 @@ RSpec.describe 'Posts API', type: :request do
     end
   end
 
-  describe 'PATH /posts/:id/add_like' do
-    let(:old_likes) { post.likes }
+  describe 'POST /posts' do
+    before { post '/posts', params: { title: 'GoodTitle', content: 'SHOK' } }
+
+    it 'creates a post' do
+      expect(json['title']).to eq('GoodTitle')
+      expect(json['content']).to eq('SHOK')
+    end
+
+    it 'status 201' do
+      expect(response).to have_http_status(201)
+    end
+  end
+
+  describe 'PATCH /posts/:id' do
+    before { patch "/posts/#{post_id}", params: { title: 'NewGoodTitle' } }
+
+    it 'updated record' do
+      expect(json['title']).to eq('NewGoodTitle')
+    end
+
+    it 'status 200' do
+      expect(response).to have_http_status(200)
+    end
+  end
+
+  describe 'DELETE /posts/:id' do
+    before { delete "/posts/#{post_id}" }
+
+    it 'status 204' do
+      expect(response).to have_http_status(204)
+    end
+  end
+
+  describe 'PATCH /posts/:id/add_like' do
+    let(:old_likes) { post_element.likes }
     let(:new_likes) { old_likes + 1 }
 
     before { patch "/posts/#{post_id}/add_like" }

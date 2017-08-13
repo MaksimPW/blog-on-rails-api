@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  resources :posts, only: [:index, :show] do
+  resources :posts do
     patch :add_like, on: :member
   end
 end
