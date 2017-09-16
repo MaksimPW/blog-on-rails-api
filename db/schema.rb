@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(version: 20170813054531) do
     t.string "title"
     t.text "content"
     t.string "author"
-    t.integer "likes"
+    t.integer "likes", default: 0
     t.string "image"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
